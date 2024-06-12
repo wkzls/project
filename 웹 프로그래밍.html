@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            position: relative;
         }
         .question {
             margin: 20px;
@@ -17,9 +18,6 @@
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 4px;
-        }
-        .question p {
-            color: #333;
         }
         .result {
             margin-top: 20px;
@@ -49,15 +47,45 @@
         #timer {
             font-weight: bold;
             color: red;
+            position: absolute;
+            top: 20px;
+            right: 20px;
         }
         .section {
             padding: 10px;
-            background-color: #ccffcc; /* 밝은 연두색 */
             margin-bottom: 10px;
+            border: 1px solid #ddd;
             border-radius: 4px;
+        }
+        .section-lightgreen {
+            background-color: #ccffcc;
         }
         .section-title {
             font-weight: bold;
+            margin-bottom: 5px;
+        }
+        #submit-btn {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #submit-btn:hover {
+            background-color: #45a049;
+        }
+        #result button {
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #result button:hover {
+            background-color: #007B9A;
         }
     </style>
 </head>
@@ -66,44 +94,37 @@
     <p>다음 <보기>의 겹쳐진 도형과 동일하게 그려보세요. (25점)</p>
     <div id="quiz-container"></div>
     <button id="submit-btn" onclick="submitAnswer()">다음</button>
-    <div id="result" class="result"></div>
+    <div id="result" class="result hidden"></div>
 
     <script>
         const questions = [
             { 
                 question: "보기", 
-                imageSrc1: "missing_shape.png",
+                imageSrc1: "images/missing_shape.png",
                 question2: "빠진 도형그리기", 
-                imageSrc2: "missing_shape.png",
-                question3: "전체도형그리기",
-                options: ["Shape 1", "Shape 2", "Shape 3", "Shape 4"], 
+                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
                 answer: 0 
             },
             { 
                 question: "보기", 
-                imageSrc1: "missing_shape2.png",
+                imageSrc1: "images/missing_shape2.png",
                 question2: "빠진 도형그리기", 
-                imageSrc2: "missing_shape2.png",
-                question3: "전체도형그리기",
-                options: ["Shape 1", "Shape 2", "Shape 3", "Shape 4"], 
+                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
                 answer: 1 
             },
-             { 
+            { 
                 question: "보기", 
-                imageSrc1: "missing_shape2.png",
+                imageSrc1: "images/missing_shape3.png",
                 question2: "빠진 도형그리기", 
-                imageSrc2: "missing_shape2.png",
-                question3: "전체도형그리기",
-                options: ["Shape 1", "Shape 2", "Shape 3", "Shape 4"], 
-                answer: 1 
-            }, { 
+                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
+                answer: 2 
+            },
+            { 
                 question: "보기", 
-                imageSrc1: "missing_shape2.png",
+                imageSrc1: "images/missing_shape4.png",
                 question2: "빠진 도형그리기", 
-                imageSrc2: "missing_shape2.png",
-                question3: "전체도형그리기",
-                options: ["Shape 1", "Shape 2", "Shape 3", "Shape 4"], 
-                answer: 1 
+                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
+                answer: 3 
             }
         ];
         let currentQuestionIndex = 0;
@@ -133,21 +154,17 @@
                 questionDiv.className = 'question';
                 questionDiv.innerHTML = `
                     <div id="timer"></div>
-                    <div class="section">
+                    <div class="section section-lightgreen">
                         <p class="section-title">${q.question}</p>
                         <img src="${q.imageSrc1}" alt="${q.question}" class="image">
                     </div>
-                    <div class="section">
+                    <div class="section section-lightgreen">
                         <p class="section-title">${q.question2}</p>
-                        <img src="${q.imageSrc2}" alt="${q.question2}" class="image">
-                    </div>
-                    <div class="section">
-                        <p class="section-title">${q.question3}</p>
                         <div class="options">
                             ${q.options.map((option, i) => `
                                 <label class="option">
                                     <input type="radio" name="question${index}" value="${i}">
-                                    ${option}
+                                    <img src="${option}" alt="Option ${i+1}" class="image">
                                 </label>
                             `).join('')}
                         </div>
@@ -169,12 +186,10 @@
             if (selectedOption) {
                 if (parseInt(selectedOption.value) === q.answer) {
                     score++;
-                    statusElement.textContent = "Correct";
-                } else {
-                    statusElement.textContent = "Incorrect";
+                    statusElement.textContent = "정답입니다";
                 }
             } else {
-                statusElement.textContent = "Not Submitted";
+                statusElement.textContent = "답을 선택하지 않았습니다";
             }
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
@@ -187,8 +202,9 @@
         function displayResults() {
             document.getElementById('submit-btn').classList.add('hidden');
             const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('hidden');
             resultDiv.innerHTML = `
-                Your score is: ${score} / ${questions.length} <br>
+                당신의 점수는 ${score * 25}/100 <br>
                 <button onclick="restartQuiz()">다시하기</button>
             `;
         }
@@ -196,6 +212,7 @@
         function restartQuiz() {
             currentQuestionIndex = 0;
             score = 0;
+            document.getElementById('result').classList.add('hidden');
             document.getElementById('submit-btn').classList.remove('hidden');
             displayQuestion(currentQuestionIndex);
         }
