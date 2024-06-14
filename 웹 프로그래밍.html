@@ -19,12 +19,6 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e0e0e0;
-            border: 1px solid #ccc;
-        }
         .hidden {
             display: none;
         }
@@ -35,12 +29,13 @@
         }
         .options {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 10px;
             margin-top: 10px;
         }
         .option {
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
         }
@@ -60,6 +55,9 @@
         .section-lightgreen {
             background-color: #ccffcc;
         }
+        .section-white {
+            background-color: #ffffff;
+        }
         .section-title {
             font-weight: bold;
             margin-bottom: 5px;
@@ -76,53 +74,51 @@
         #submit-btn:hover {
             background-color: #45a049;
         }
-        #result button {
-            padding: 10px 20px;
-            background-color: #008CBA;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        .error-message {
+            color: red;
+            margin-top: 10px;
         }
-        #result button:hover {
-            background-color: #007B9A;
+        .result-message {
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
     <h1>겹쳐진 도형그리기</h1>
-    <p>다음 <보기>의 겹쳐진 도형과 동일하게 그려보세요. (25점)</p>
     <div id="quiz-container"></div>
     <button id="submit-btn" onclick="submitAnswer()">다음</button>
-    <div id="result" class="result hidden"></div>
 
     <script>
         const questions = [
             { 
-                question: "보기", 
+                questionNumber: "1. ", 
+                question: "보기1", 
                 imageSrc1: "images/missing_shape.png",
-                question2: "빠진 도형그리기", 
+                question2: "보기2", 
                 options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
                 answer: 0 
             },
             { 
-                question: "보기", 
+                questionNumber: "2. ", 
+                question: "보기1", 
                 imageSrc1: "images/missing_shape2.png",
-                question2: "빠진 도형그리기", 
+                question2: "보기2", 
                 options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
                 answer: 1 
             },
             { 
-                question: "보기", 
+                questionNumber: "3. ", 
+                question: "보기1", 
                 imageSrc1: "images/missing_shape3.png",
-                question2: "빠진 도형그리기", 
+                question2: "보기2", 
                 options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
                 answer: 2 
             },
             { 
-                question: "보기", 
+                questionNumber: "4. ", 
+                question: "보기1", 
                 imageSrc1: "images/missing_shape4.png",
-                question2: "빠진 도형그리기", 
+                question2: "보기2", 
                 options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
                 answer: 3 
             }
@@ -131,6 +127,7 @@
         let timer;
         let timeLimit = 60; // 1 minute per question
         let score = 0;
+        let results = [];
 
         function startTimer() {
             let timeLeft = timeLimit;
@@ -155,10 +152,10 @@
                 questionDiv.innerHTML = `
                     <div id="timer"></div>
                     <div class="section section-lightgreen">
-                        <p class="section-title">${q.question}</p>
+                        <p class="section-title">${q.questionNumber}다음 <span class="section-title">${q.question}</span>에서 빠진 도형의 그림이 <span class="section-title">${q.question2}</span>입니다. 빠진 도형을 고르시오. (25점)</p>
                         <img src="${q.imageSrc1}" alt="${q.question}" class="image">
                     </div>
-                    <div class="section section-lightgreen">
+                    <div class="section section-white">
                         <p class="section-title">${q.question2}</p>
                         <div class="options">
                             ${q.options.map((option, i) => `
@@ -169,7 +166,7 @@
                             `).join('')}
                         </div>
                     </div>
-                    <p id="status${index}" class="status"></p>
+                    <p id="error${index}" class="error-message hidden">정답을 선택해 주세요</p>
                 `;
                 quizContainer.appendChild(questionDiv);
                 startTimer();
@@ -182,38 +179,48 @@
             clearInterval(timer);
             const q = questions[currentQuestionIndex];
             const selectedOption = document.querySelector(`input[name="question${currentQuestionIndex}"]:checked`);
-            const statusElement = document.getElementById(`status${currentQuestionIndex}`);
+            const errorElement = document.getElementById(`error${currentQuestionIndex}`);
             if (selectedOption) {
-                if (parseInt(selectedOption.value) === q.answer) {
+                const answerIndex = parseInt(selectedOption.value);
+                if (answerIndex === q.answer) {
                     score++;
-                    statusElement.textContent = "정답입니다";
+                    results.push(`${currentQuestionIndex + 1}번 문제: 정답입니다.`);
+                } else {
+                    results.push(`${currentQuestionIndex + 1}번 문제: 오답입니다.`);
+                }
+                errorElement.classList.add('hidden');
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    displayQuestion(currentQuestionIndex);
+                } else {
+                    displayResults();
                 }
             } else {
-                statusElement.textContent = "답을 선택하지 않았습니다";
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                displayQuestion(currentQuestionIndex);
-            } else {
-                displayResults();
+                errorElement.classList.remove('hidden');
             }
         }
 
         function displayResults() {
-            document.getElementById('submit-btn').classList.add('hidden');
-            const resultDiv = document.getElementById('result');
-            resultDiv.classList.remove('hidden');
-            resultDiv.innerHTML = `
-                당신의 점수는 ${score * 25}/100 <br>
-                <button onclick="restartQuiz()">다시하기</button>
+            document.body.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+                    <div style="text-align: center;">
+                        ${results.map((result) => `<p>${result}</p>`).join('')}
+                        <p class="result-message">당신의 점수는 ${score * 25}/100 입니다</p>
+                        <button onclick="restartQuiz()">다시하기</button>
+                    </div>
+                </div>
             `;
         }
 
         function restartQuiz() {
             currentQuestionIndex = 0;
             score = 0;
-            document.getElementById('result').classList.add('hidden');
-            document.getElementById('submit-btn').classList.remove('hidden');
+            results = [];
+            document.body.innerHTML = `
+                <h1>겹쳐진 도형그리기</h1>
+                <div id="quiz-container"></div>
+                <button id="submit-btn" onclick="submitAnswer()">다음</button>
+            `;
             displayQuestion(currentQuestionIndex);
         }
 
