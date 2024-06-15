@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>겹쳐진 도형그리기</title>
+    <title>빠진 도형 찾기</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,20 +80,10 @@
         .background-white {
             background-color: #ffffff;
         }
-        .image-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .image {
-            max-width: 100%;
-            height: auto;
-        }
     </style>
 </head>
 <body>
-    <h1>겹쳐진 도형그리기</h1>
+    <h1>빠진 도형 찾기</h1>
     <div id="quiz-container"></div>
     <button id="submit-btn" onclick="submitAnswer()">다음</button>
 
@@ -102,36 +92,36 @@
             { 
                 questionNumber: "1. ", 
                 question: "<보기 1>", 
-                imageSrc1: "1.jpg",
+                imageSrc1: "https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/1.jpg",
                 question2: "<보기 2>", 
-                imageSrc2: ["1-1.jpg"],
+                imageSrc2: ["https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/1-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 0 
             },
             { 
                 questionNumber: "2. ", 
                 question: "<보기 1>", 
-                imageSrc1: "2.jpg",
+                imageSrc1: "https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/2.jpg",
                 question2: "<보기 2>", 
-                imageSrc2: ["2-1.jpg"],
+                imageSrc2: ["https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/2-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 0 
             },
             { 
                 questionNumber: "3. ", 
                 question: "<보기 1>", 
-                imageSrc1: "3.jpg",
+                imageSrc1: "https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/3.jpg",
                 question2: "<보기 2>", 
-                imageSrc2: ["3-1.jpg"],
+                imageSrc2: ["https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/3-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 1 
             },
             { 
                 questionNumber: "4. ", 
                 question: "<보기 1>", 
-                imageSrc1: "4.jpg",
+                imageSrc1: "https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/4.jpg",
                 question2: "<보기 2>", 
-                imageSrc2: ["4-1.jpg"],
+                imageSrc2: ["https://raw.githubusercontent.com/wkzls/project/main/%EC%9D%B4%EB%AF%B8%EC%A7%80/4-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 1 
             }
@@ -247,7 +237,7 @@
             score = 0;
             results = [];
             document.body.innerHTML = `
-                <h1>겹쳐진 도형그리기</h1>
+                <h1>빠진 도형 찾기</h1>
                 <div id="quiz-container"></div>
                 <button id="submit-btn" onclick="submitAnswer()">다음</button>
             `;
