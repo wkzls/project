@@ -22,11 +22,6 @@
         .hidden {
             display: none;
         }
-        .image {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-        }
         .options {
             display: flex;
             flex-direction: row;
@@ -38,6 +33,7 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
         #timer {
             font-weight: bold;
@@ -56,7 +52,7 @@
             background-color: #ccffcc;
         }
         .section-white {
-            background-color: #ffffff; /* Set background color to white */
+            background-color: #ffffff;
         }
         .section-title {
             font-weight: bold;
@@ -81,6 +77,9 @@
         .result-message {
             font-size: 24px;
         }
+        .background-white {
+            background-color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -92,35 +91,35 @@
         const questions = [
             { 
                 questionNumber: "1. ", 
-                question: "<보기>", 
+                question: "<보기 1>", 
                 imageSrc1: "images/missing_shape.png",
                 question2: "<보기 2>", 
-                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
+                options: ["1개", "2개", "3개", "4개"], 
                 answer: 0 
             },
             { 
                 questionNumber: "2. ", 
-                question: "<보기>", 
+                question: "<보기 1>", 
                 imageSrc1: "images/missing_shape2.png",
                 question2: "<보기 2>", 
-                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
-                answer: 1 
+                options: ["1개", "2개", "3개", "4개"], 
+                answer: 0 
             },
             { 
                 questionNumber: "3. ", 
-                question: "<보기>", 
+                question: "<보기 1>", 
                 imageSrc1: "images/missing_shape3.png",
                 question2: "<보기 2>", 
-                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
-                answer: 2 
+                options: ["1개", "2개", "3개", "4개"], 
+                answer: 1 
             },
             { 
                 questionNumber: "4. ", 
-                question: "<보기>", 
+                question: "<보기 1>", 
                 imageSrc1: "images/missing_shape4.png",
                 question2: "<보기 2>", 
-                options: ["images/option1.png", "images/option2.png", "images/option3.png", "images/option4.png"], 
-                answer: 3 
+                options: ["1개", "2개", "3개", "4개"], 
+                answer: 1 
             }
         ];
         let currentQuestionIndex = 0;
@@ -153,22 +152,22 @@
                 questionDiv.innerHTML = `
                     <div id="timer"></div>
                     <div class="section section-lightgreen">
-                        <p class="section-title">${q.questionNumber}다음은 <보기 2>에서 빠진 도형을 <보기 1>을 보고 고르시오.(25점)</p>
+                        <p class="section-title">${q.questionNumber}다음 <보기 1>을 보고 <보기 2>에 빠진 도형이 몇 개인지 고르시오. (25점)</p>
                     </div>
                     <div class="section section-white">
-                        <p class="section-title">보기</p>
+                        <p class="section-title"><보기 1></p>
                         <img src="${q.imageSrc1}" alt="보기 이미지" class="image">
                     </div>
-                    <div class="section section-lightgreen">
-                        <p class="section-title">${q.question2}</p>
-                        <img src="images/option_base.png" alt="보기 2 이미지" class="image"> <!-- Assuming there is a base image for <보기 2> -->
+                    <div class="section section-white background-white">
+                        <p class="section-title"><보기 2></p>
+                        <img src="images/option_base.png" alt="보기 2 이미지" class="image">
                     </div>
                     <div class="section section-white">
                         <div class="options">
                             ${q.options.map((option, i) => `
                                 <label class="option">
                                     <input type="radio" name="question${index}" value="${i}">
-                                    <img src="${option}" alt="Option ${i+1}" class="image">
+                                    <span>${option}</span>
                                 </label>
                             `).join('')}
                         </div>
