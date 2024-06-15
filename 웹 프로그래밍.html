@@ -80,6 +80,16 @@
         .background-white {
             background-color: #ffffff;
         }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .image {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -92,32 +102,36 @@
             { 
                 questionNumber: "1. ", 
                 question: "<보기 1>", 
-                imageSrc1: "images/missing_shape.png",
+                imageSrc1: "1.jpg",
                 question2: "<보기 2>", 
+                imageSrc2: ["1-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 0 
             },
             { 
                 questionNumber: "2. ", 
                 question: "<보기 1>", 
-                imageSrc1: "images/missing_shape2.png",
+                imageSrc1: "2.jpg",
                 question2: "<보기 2>", 
+                imageSrc2: ["2-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 0 
             },
             { 
                 questionNumber: "3. ", 
                 question: "<보기 1>", 
-                imageSrc1: "images/missing_shape3.png",
+                imageSrc1: "3.jpg",
                 question2: "<보기 2>", 
+                imageSrc2: ["3-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 1 
             },
             { 
                 questionNumber: "4. ", 
                 question: "<보기 1>", 
-                imageSrc1: "images/missing_shape4.png",
+                imageSrc1: "4.jpg",
                 question2: "<보기 2>", 
+                imageSrc2: ["4-1.jpg"],
                 options: ["1개", "2개", "3개", "4개"], 
                 answer: 1 
             }
@@ -152,15 +166,19 @@
                 questionDiv.innerHTML = `
                     <div id="timer"></div>
                     <div class="section section-lightgreen">
-                        <p class="section-title">${q.questionNumber}다음 <보기 1>을 보고 <보기 2>에 빠진 도형이 몇 개인지 고르시오. (25점)</p>
+                        <p class="section-title">${q.questionNumber}${q.question}을 보고 ${q.question2}에 빠진 도형이 몇 개인지 고르시오. (25점)</p>
                     </div>
                     <div class="section section-white">
-                        <p class="section-title"><보기 1></p>
+                        <p class="section-title">${q.question}</p>
                         <img src="${q.imageSrc1}" alt="보기 이미지" class="image">
                     </div>
                     <div class="section section-white background-white">
-                        <p class="section-title"><보기 2></p>
-                        <img src="images/option_base.png" alt="보기 2 이미지" class="image">
+                        <p class="section-title">${q.question2}</p>
+                        <div class="image-container">
+                            ${q.imageSrc2.map((image, idx) => `
+                                <img src="${image}" alt="${q.question2} 이미지 ${idx + 1}" class="image">
+                            `).join('')}
+                        </div>
                     </div>
                     <div class="section section-white">
                         <div class="options">
